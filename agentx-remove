@@ -1,0 +1,18 @@
+#!/bin/sh
+#!/bin/sh
+
+Clean()
+{
+sudo rm -rf /usr/lib/agentx/
+sudo rm /usr/bin/agentx
+}
+
+Stop()
+{
+    agentx=`sudo jps |grep AgentMain`
+    proc=`echo $agentx | cut -d ' ' -f1`
+    sudo kill -9 $proc
+}
+
+Stop
+Clean

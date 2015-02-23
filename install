@@ -1,0 +1,42 @@
+#!/bin/sh
+
+DownloadAgentx() {
+cd /opt/
+git clone https://github.com/debarshri/agentx
+cd /opt/agentx/
+sudo rm -rf .git
+}
+
+CleanMoveToUsr()
+{
+sudo mkdir /usr/lib/agentx/
+sudo mv agentx.jar /usr/lib/agentx/
+sudo mv version /usr/lib/agentx/
+export PATH=$PATH:/usr/lib/agentx/agentx.jar
+
+chmod 755 agentx
+
+sudo mv agentx /usr/bin/
+sudo mv agentx-remove /usr/bin/
+sudo rm -rf /opt/agentx
+}
+
+agentx=`which agentx|grep "agentx"`
+java_exists=`which java|grep "java"`
+if [ -z "$java_exists" ]
+then
+    echo "Java does not exist"
+    exit 0
+elif [ -z "$agentx" ]
+then
+    echo "Downloading Latest version of Agentx"
+    DownloadAgentx
+    CleanMoveToUsr
+    echo "Installed Agentx"
+    echo "Now you can start AGENTX.."
+    echo "Usage : --config [config.json] --stop --status --version"
+else
+    echo "AgentX exists!"
+    exit 0
+fi
+

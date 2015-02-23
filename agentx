@@ -1,2 +1,35 @@
 #!/bin/sh
 
+Stop()
+{
+    agentx=`sudo jps |grep AgentMain`
+    proc=`echo $agentx | cut -d ' ' -f1`
+    sudo kill -9 $proc
+}
+
+Start()
+{
+   sudo java -jar /usr/lib/agentx/agentx.jar
+}
+
+if [ -z $1 ]
+then
+echo "Usage : --config [config.json] --stop --status --version"
+elif [ $1 == "--config" ]
+then
+    if [ -z $2 ]
+     then
+        echo "Config cannot be null"
+     else
+        Stop
+        Start
+    fi
+elif [ $1 == "--stop" ]
+then
+    Stop
+elif [ $1 == "--version" ]
+then
+    cat /usr/lib/agentx/version
+else
+    echo "Usage : --config [config.json] --stop --status --version"
+fi
